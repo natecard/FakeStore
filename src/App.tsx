@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Components/Header';
 import Products from './Components/Products';
-import RouteSwitch from './RouteSwitch';
 
 export default function App() {
   interface item {
@@ -10,24 +9,74 @@ export default function App() {
     id: string;
     price: number;
     amount: number;
+    description: string;
+    rating: any;
     addToCart: any;
+    handleAmount: any;
   }
-  function addToCart(item: item['id']) {
-    console.log('clicked');
-    console.log(item);
-  }
-  function increaseAmount(item: item['amount']) {
-    console.log('increased');
-    setItemAmount((prevVal) => prevVal + 1);
-  }
-  function decreaseAmount(item: item['amount']) {
-    console.log('decreased');
-    setItemAmount((prevVal) => prevVal - 1);
-  }
-  const [productData, setProductsData] = useState<data>([]);
-  const [productDetails, setProductDetails] = useState([]);
-  const [itemAmount, setItemAmount] = useState(0);
 
+  function addToCart(item: item) {
+    setCart((prevCart) => {
+      const newCart = [...prevCart];
+      const cartItemIndex = newCart.findIndex((i) => i.id === item.id);
+      if (cartItemIndex === -1) {
+        newCart.push({
+          id: item.id,
+          title: item.title,
+          image: item.image,
+          price: item.price,
+          description: item.description,
+          rating: item.rating,
+          amount: 1,
+          addToCart: addToCart,
+          handleAmount: handleAmount,
+        });
+        return newCart;
+      }
+      const cartItem = newCart[cartItemIndex];
+      cartItem.amount++;
+      newCart[cartItemIndex] = cartItem;
+      return newCart;
+    });
+    console.log(`clicked: ${item.id}`);
+  }
+
+  function handleAmount(
+    id: item['id'],
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const name = event.target.name;
+    const value = event.target.value;
+    setProductsData((prevData: any) => {
+      const newData = [...prevData];
+      const itemIndex = newData.findIndex((item) => item.id === id);
+      if (itemIndex === -1) {
+        // handle error if item with the given id is not found in the productsData array
+        return prevData;
+      }
+      newData[itemIndex] = {
+        ...newData[itemIndex],
+        [name]: value,
+      };
+      return newData;
+    });
+    console.log(value);
+  }
+  const [productData, setProductsData] = useState<any>([]);
+  const [productDetails, setProductDetails] = useState([]);
+  const [cart, setCart] = useState<
+    Array<{
+      title: string;
+      image: string;
+      id: string;
+      price: number;
+      amount: number;
+      description: string;
+      rating: any;
+      addToCart: any;
+      handleAmount: any;
+    }>
+  >([]);
   useEffect(() => {
     async function apiStoreCall() {
       const resp = await fetch('https://fakestoreapi.com/products/', {
@@ -41,13 +90,16 @@ export default function App() {
   }, []);
   useEffect(() => {
     const mappedProducts = productData.map((item: item) => ({
+      id: item.id,
       title: item.title,
       image: item.image,
-      id: item.id,
       price: item.price,
+      description: item.description,
+      rating: item.rating,
+      amount: item.amount,
     }));
     setProductDetails(mappedProducts);
-    console.log(productDetails);
+    console.log(cart);
   }, [productData]);
 
   const productElements = productData.map((item: item) => (
@@ -56,11 +108,10 @@ export default function App() {
       image={item.image}
       id={item.id}
       key={item.id}
-      price={item.price}
+      price={item.price.toFixed()}
       amount={item.amount}
-      addToCart={() => addToCart(item.id)}
-      increaseAmount={() => increaseAmount(item.amount)}
-      decreaseAmount={() => decreaseAmount(item.amount)}
+      addToCart={() => addToCart(item)}
+      handleAmount={() => handleAmount(item.id, event)}
     />
   ));
   return (

@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
 
 export default function Products(props: {
   title: string;
-  price: number;
-  image: string;
-  id: string;
-  amount: number;
-  addToCart: any;
-  increaseAmount: any;
-  decreaseAmount: any;
+    image: string;
+    id: string;
+    price: number;
+    amount: number;
+    description: string;
+    rating: any;
+    addToCart: any;
+    handleAmount: any;
 }) {
   return (
     <div className="flex justify-around flex-col pt-4 px-4">
@@ -19,23 +20,21 @@ export default function Products(props: {
       />
       <h2 className="text-center truncate">{props.title}</h2>
       <div className="justify-around align-middle flex flex-row p-2">
-        <button onClick={props.decreaseAmount}>-</button>
         <input
+          onChange={() => props.handleAmount(event)}
           className="h-7 p-1 w-14"
           value={props.amount}
-          min="1"
+          min="0"
+          defaultValue="0"
           type="number"
-          name="amount"
-          id="amount"
+          name={`amount-${props.id}`}
+          id={`amount-${props.id}`}
         />
-        <button onClick={props.increaseAmount}>+</button>
-        <div className="text-right pt-0.5 font-bold">
-          ${props.price.toFixed()}
-        </div>
+        <div className="text-right pt-0.5 font-bold">${props.price}</div>
       </div>
       <div className="flex flex-row mb-2 self-center">
         <button
-          onClick={props.addToCart}
+          onClick={() => props.addToCart(props, event)}
           className="uppercase p-1 bg-black rounded hover:bg-white hover:text-black text-white font-bold"
         >
           add to cart
