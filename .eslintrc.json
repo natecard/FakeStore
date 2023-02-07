@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "env": {
     "browser": true,
     "es2021": true
@@ -17,5 +18,29 @@
   "plugins": ["react", "prettier"],
   "rules": {
     "prettier/prettier": "error"
+=======
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/prop-types": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+>>>>>>> b58eb1c (Shopping cart, rig buttons)
   }
 }
