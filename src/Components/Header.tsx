@@ -14,7 +14,7 @@ export default function Header() {
               <li className="ml-8 font-medium bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] tracking-wide text-transparent bg-clip-text">
                 <Link to="/Products">Store</Link>
               </li>
-              <li className="ml-8 font-medium bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] tracking-wide text-transparent bg-clip-text">
+              {/* <li className="ml-8 font-medium bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] tracking-wide text-transparent bg-clip-text">
                 <Link to="/Mac">MacOS</Link>
               </li>
               <li className="ml-8 font-medium bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] tracking-wide text-transparent bg-clip-text">
@@ -22,7 +22,7 @@ export default function Header() {
               </li>
               <li className="ml-8 font-medium bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] tracking-wide text-transparent bg-clip-text">
                 <Link to="/iPad">iPadOS</Link>
-              </li>
+              </li> */}
             </div>
             <li className="bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] bg-clip-text">
               <Link to="/ShoppingCart">

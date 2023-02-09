@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context } from '../App';
+import Items from './Items';
 import Header from './Header';
+import item from './ItemInterface';
+import ShoppingCartContents from './ShoppingCartContents';
 
-export default function ShoppingCart(props: any) {
+export default function ShoppingCart() {
+  const { cart } = useContext(Context) as { cart: Array<item> };
+  console.log(cart);
+  const shoppingCartElements = cart.map((item: item) => (
+    <ShoppingCartContents
+      cart={cart}
+      title={item.title}
+      image={item.image}
+      id={item.id}
+      key={item.id}
+      price={item.price.toFixed()}
+      amount={item.amount}
+    />
+  ));
   return (
     <div>
       <Header />
-      <div>
-        <img src={props.image} alt="" />
-        <h2>{props.title}</h2>
-        <h4>{props.amount}</h4>
-      </div>
+      <div>{shoppingCartElements}</div>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import Header from './Header';
 
 export default function Home() {
   return (
-    <div className="">
+    <div>
       <Header />
       {/* black background with screen height and overflow hidden */}
       <div className="flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black">
