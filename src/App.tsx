@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createContext } from 'react';
-import item from './Components/ItemInterface';
+import { item } from './Components/Interfaces';
 import { Route, Routes } from 'react-router-dom';
 import Home from './Components/Home';
 import Products from './Components/Products';
@@ -7,39 +7,45 @@ import ShoppingCart from './Components/ShoppingCart';
 export const Context = createContext<any>([]);
 
 export default function App() {
-  const [productData, setProductData] = useState<any>([]);
-  const [amount, setAmount] = useState(0);
-  const [cart, setCart] = useState<
-    Array<{
-      title: string;
-      image: string;
-      id: string;
-      price: any;
-      amount: any;
-      description: string;
-      rating: any;
-      addToCart: any;
-      handleAmountChange: any;
-    }>
-  >([]);
+  const [productData, setProductData] = useState<any[]>([]);
+  const [quantity, setQuantity] = useState(0);
+  const [cart, setCart] = useState<item[]>([]);
 
   useEffect(() => {
     async function apiStoreCall() {
-      const resp = await fetch('https://fakestoreapi.com/products/', {
-        mode: 'cors',
-      });
-      const returnedData = await resp.json();
-      // const shortenedData = returnedData.slice(0, 24);
-      setProductData(returnedData);
-      console.log(productData);
+      const request = await fetch(
+        'https://mock.shop/api?query={products(first:%2020){edges%20{node%20{id%20title%20description%20featuredImage%20{id%20url}%20variants(first:%203){edges%20{node%20{price%20{amount%20currencyCode}}}}}}}}',
+        { mode: 'cors' }
+      );
+      const response = await request.json();
+      const {
+        data: {
+          products: { edges },
+        },
+      } = response;
+      setProductData(
+        edges.map((item, index) => ({
+          id: item.node.id,
+          title: item.node.title,
+          description: item.node.description,
+          image: item.node.featuredImage.url,
+          quantity: item.quantity,
+          handleQuantityChange: handleQuantityChange,
+          addToCart: addToCart,
+          amount: item.node.variants.edges.map((edge: any) => {
+            return edge.node.price.amount;
+          }),
+        }))
+      );
     }
     apiStoreCall();
-  }, [setProductData]);
-  function handleAmountChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setAmount(Number(event.target.value));
+  }, []);
+
+  function handleQuantityChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setQuantity(Number(event.target.value));
     console.log(event.target.value);
   }
-  function addToCart(item: item, amount: number) {
+  function addToCart(item: item, quantity: number) {
     setCart((prevCart) => {
       const newCart = [...prevCart];
       const cartItemIndex = newCart.findIndex((i) => i.id === item.id);
@@ -47,18 +53,17 @@ export default function App() {
         newCart.push({
           id: item.id,
           title: item.title,
-          image: item.image,
-          price: item.price,
           description: item.description,
-          rating: item.rating,
-          amount: amount,
+          quantity: quantity,
           addToCart: addToCart,
-          handleAmountChange: handleAmountChange,
+          handleQuantityChange: handleQuantityChange,
+          image: item.image,
+          amount: item.amount,
         });
         return newCart;
       }
       const cartItem = newCart[cartItemIndex];
-      cartItem.amount += amount;
+      cartItem.quantity += quantity;
       newCart[cartItemIndex] = cartItem;
       return newCart;
     });
@@ -69,12 +74,12 @@ export default function App() {
       value={{
         productData,
         setProductData,
-        amount,
-        setAmount,
+        quantity,
+        setQuantity,
         cart,
         setCart,
         addToCart,
-        handleAmountChange,
+        handleQuantityChange,
       }}
     >
       <Routes>

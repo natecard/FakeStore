@@ -2,25 +2,34 @@ import React, { useContext } from 'react';
 import { Context } from '../App';
 import Header from './Header';
 import Items from './Items';
-import item from './ItemInterface';
+import { item } from './Interfaces';
 
 export default function Products() {
-  const { productData, setProductData, setCart, cart, amount, setAmount } =
-    useContext(Context) as {
-      productData: Array<item>;
-      setProductData: any;
-      amount: number;
-      setAmount: any;
-      setCart: any;
-      cart: Array<item>;
-    };
+  const {
+    productData,
+    setProductData,
+    setCart,
+    cart,
+    quantity,
+    setQuantity,
+    amount,
+  } = useContext(Context) as {
+    productData: item[];
+    setProductData: any;
+    amount: number;
+    quantity: number;
+    setQuantity: any;
+    setCart: any;
+    cart: item[];
+  };
   console.log(Context);
   if (!productData) return null;
 
-  function handleAmountChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setAmount(Number(event.target.value));
+  function handleQuantityChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setQuantity(Number(event.target.value));
   }
-  function addToCart(item: item, amount: number) {
+
+  function addToCart(item: item, quantity: number) {
     setCart((prevCart: any) => {
       const newCart = [...prevCart];
       const cartItemIndex = newCart.findIndex((i) => i.id === item.id);
@@ -29,17 +38,16 @@ export default function Products() {
           id: item.id,
           title: item.title,
           image: item.image,
-          price: item.price,
+          amount: item.amount,
           description: item.description,
-          rating: item.rating,
-          amount: amount,
+          quantity: quantity,
           addToCart: addToCart,
-          handleAmountChange: handleAmountChange,
+          handleQuantityChange: handleQuantityChange,
         });
         return newCart;
       }
       const cartItem = newCart[cartItemIndex];
-      cartItem.amount += amount;
+      cartItem.quantity += quantity;
       newCart[cartItemIndex] = cartItem;
       return newCart;
     });
@@ -48,21 +56,20 @@ export default function Products() {
   const productElements = productData.map((item) => (
     <Items
       title={item.title}
-      image={item.image}
       id={item.id}
       key={item.id}
-      price={item.price.toFixed()}
-      amount={item.amount}
+      amount={item.amount['0']}
+      quantity={item.quantity}
       description={item.description}
-      rating={item.rating}
-      addToCart={() => addToCart(item, amount)}
-      handleAmountChange={() => handleAmountChange(event)}
+      image={item.image}
+      addToCart={() => addToCart(item, quantity)}
+      handleQuantityChange={() => handleQuantityChange(event)}
     />
   ));
   return (
     <div>
       <Header />
-      <div className="grid gap-6 grid-rows-6 grid-cols-4">
+      <div className="grid bg-[#f3f3f3] gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {productElements}
       </div>
     </div>

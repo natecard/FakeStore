@@ -7,7 +7,7 @@ import App from './App';
 export default function RouteSwitch() {
   return (
     <BrowserRouter>
-      <App />;
+      <App />
     </BrowserRouter>
   );
 }
