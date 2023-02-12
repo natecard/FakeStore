@@ -23,23 +23,75 @@ export default function App() {
           products: { edges },
         },
       } = response;
+      console.log(edges);
       setProductData(
-        edges.map((item, index) => ({
-          id: item.node.id,
-          title: item.node.title,
-          description: item.node.description,
-          image: item.node.featuredImage.url,
-          quantity: item.quantity,
-          handleQuantityChange: handleQuantityChange,
-          addToCart: addToCart,
-          amount: item.node.variants.edges.map((edge: any) => {
-            return edge.node.price.amount;
-          }),
-        }))
+        edges.map(
+          (
+            item: {
+              node: {
+                id: any;
+                title: any;
+                description: any;
+                featuredImage: { url: any };
+                variants: { edges: any[] };
+              };
+              quantity: any;
+            },
+            index: any
+          ) => ({
+            id: item.node.id,
+            title: item.node.title,
+            description: item.node.description,
+            image: item.node.featuredImage.url,
+            quantity: item.quantity,
+            handleQuantityChange: handleQuantityChange,
+            addToCart: addToCart,
+            amount: item.node.variants.edges.map((edge: any) => {
+              return edge.node.price.amount;
+            }),
+          })
+        )
       );
     }
     apiStoreCall();
   }, []);
+  function removeFromCart(itemId: string) {
+    console.log('item deleted', itemId);
+    setCart((oldCart) => oldCart.filter((item) => item.id !== itemId));
+  }
+
+  function handleCartChange(
+    item: item,
+    quantity: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setCart((prevCart) => {
+      const newCart = [...prevCart];
+      const cartItemIndex = newCart.findIndex((i) => i.id === item.id);
+      if (cartItemIndex === -1) {
+        newCart.push({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          quantity: quantity,
+          addToCart: addToCart,
+          handleQuantityChange: handleQuantityChange,
+          image: item.image,
+          amount: item.amount,
+          handleCartChange: handleCartChange,
+          removeFromCart: removeFromCart,
+        });
+        return newCart;
+      }
+      const cartItem = newCart[cartItemIndex];
+      cartItem.quantity = Number(event.target.value);
+      newCart[cartItemIndex] = cartItem;
+      return newCart;
+    });
+    if (item.quantity < 1) {
+      removeFromCart(item.id);
+    }
+  }
 
   function handleQuantityChange(event: React.ChangeEvent<HTMLInputElement>) {
     setQuantity(Number(event.target.value));
@@ -54,11 +106,13 @@ export default function App() {
           id: item.id,
           title: item.title,
           description: item.description,
-          quantity: quantity,
+          quantity: quantity < 1 ? 1 : quantity,
           addToCart: addToCart,
           handleQuantityChange: handleQuantityChange,
           image: item.image,
           amount: item.amount,
+          handleCartChange: handleCartChange,
+          removeFromCart: removeFromCart,
         });
         return newCart;
       }
@@ -80,6 +134,8 @@ export default function App() {
         setCart,
         addToCart,
         handleQuantityChange,
+        handleCartChange,
+        removeFromCart,
       }}
     >
       <Routes>

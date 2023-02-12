@@ -7,4 +7,6 @@ export interface item {
   quantity: number;
   addToCart: Function;
   handleQuantityChange: Function;
+  handleCartChange: Function;
+  removeFromCart: Function;
 }

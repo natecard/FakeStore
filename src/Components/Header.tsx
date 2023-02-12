@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
-    <div className="text-[#305d44] font-base subpixel-antialiased p-2 list-none bg-black ">
+    <div className="text-[#305d44] font-base subpixel-antialiased p-4 list-none bg-black ">
       <nav>
         <div className="flex flex-row items-end">
-          <Link className="text-3xl" to="/Home">
+          <Link className="pl-4" to="/Home">
             <img
               className="h-12 w-36"
               src="../../public/brand-dark.png"
@@ -15,11 +15,11 @@ export default function Header() {
           </Link>
           <div className="flex flex-row w-full self-center justify-between">
             <div className="flex flex-row">
-              <li className="ml-8 font-medium bg-gradient-to-b from-[#305d44] via-green-700  to-[#354d4b] tracking-wide text-transparent bg-clip-text">
+              <li className="ml-8 font-medium tracking-wider">
                 <Link to="/Products">Store</Link>
               </li>
             </div>
-            <li className="bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] bg-clip-text">
+            <li className="bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] pr-4 bg-clip-text">
               <Link to="/ShoppingCart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

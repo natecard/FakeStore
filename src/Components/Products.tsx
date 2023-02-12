@@ -13,6 +13,10 @@ export default function Products() {
     quantity,
     setQuantity,
     amount,
+    handleCartChange,
+    removeFromCart,
+    addToCart,
+    handleQuantityChange,
   } = useContext(Context) as {
     productData: item[];
     setProductData: any;
@@ -21,38 +25,13 @@ export default function Products() {
     setQuantity: any;
     setCart: any;
     cart: item[];
+    handleCartChange: Function;
+    removeFromCart: Function;
+    handleQuantityChange: Function;
+    addToCart: Function;
   };
-  console.log(Context);
   if (!productData) return null;
 
-  function handleQuantityChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setQuantity(Number(event.target.value));
-  }
-
-  function addToCart(item: item, quantity: number) {
-    setCart((prevCart: any) => {
-      const newCart = [...prevCart];
-      const cartItemIndex = newCart.findIndex((i) => i.id === item.id);
-      if (cartItemIndex === -1) {
-        newCart.push({
-          id: item.id,
-          title: item.title,
-          image: item.image,
-          amount: item.amount,
-          description: item.description,
-          quantity: quantity,
-          addToCart: addToCart,
-          handleQuantityChange: handleQuantityChange,
-        });
-        return newCart;
-      }
-      const cartItem = newCart[cartItemIndex];
-      cartItem.quantity += quantity;
-      newCart[cartItemIndex] = cartItem;
-      return newCart;
-    });
-    console.log(cart);
-  }
   const productElements = productData.map((item) => (
     <Items
       title={item.title}
@@ -64,6 +43,8 @@ export default function Products() {
       image={item.image}
       addToCart={() => addToCart(item, quantity)}
       handleQuantityChange={() => handleQuantityChange(event)}
+      handleCartChange={handleCartChange}
+      removeFromCart={removeFromCart}
     />
   ));
   return (
