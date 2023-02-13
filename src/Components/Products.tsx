@@ -37,7 +37,7 @@ export default function Products() {
       title={item.title}
       id={item.id}
       key={item.id}
-      amount={item.amount['0']}
+      amount={item.amount}
       quantity={item.quantity}
       description={item.description}
       image={item.image}

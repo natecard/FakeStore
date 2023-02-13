@@ -9,5 +9,5 @@ export interface item {
   handleQuantityChange: Function;
   handleCartChange: Function;
   removeFromCart: Function;
-  itemAmount: number;
+  // itemAmount: number;
 }

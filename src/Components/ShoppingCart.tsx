@@ -12,6 +12,10 @@ export default function ShoppingCart() {
     addToCart,
     handleCartChange,
     removeFromCart,
+    cartSum,
+    setCartSum,
+    cartQuantity,
+    setCartQuantity,
   } = useContext(Context) as {
     amount: number;
     quantity: number;
@@ -22,50 +26,21 @@ export default function ShoppingCart() {
     removeFromCart: Function;
     handleQuantityChange: Function;
     addToCart: Function;
+    cartSum: number;
+    cartQuantity: number;
+    setCartSum: any;
+    setCartQuantity: any;
   };
-  const [cartSum, setCartSum] = useState(0);
-  const [cartQuantity, setCartQuantity] = useState(0);
+
   if (!cart) return null;
-  useEffect(() => {
-    const cartTotal: any[] = [];
-    const amountTotal = cart.map((item: item) => {
-      cartTotal.push(item.amount[0]);
-    });
-    function sumArray(array) {
-      return array
-        .map(function (item) {
-          return parseFloat(item);
-        })
-        .reduce(function (sum, current) {
-          return sum + current;
-        }, 0);
-    }
-    setCartSum(sumArray(cartTotal));
-  }, [cart]);
-  useEffect(() => {
-    const cartItemTotal: any[] = [];
-    const amountTotal = cart.map((item: item) => {
-      cartItemTotal.push(item.quantity);
-    });
-    function sumArray(array) {
-      return array
-        .map(function (item) {
-          return parseFloat(item);
-        })
-        .reduce(function (sum, current) {
-          return sum + current;
-        }, 0);
-    }
-    setCartQuantity(sumArray(cartItemTotal));
-    console.log(cart);
-  }, [cart]);
+
   const shoppingCartElements = cart.map((item: item) => (
     <ShoppingCartContents
       title={item.title}
       image={item.image}
       id={item.id}
       key={item.id}
-      amount={item.amount['0']}
+      amount={item.amount}
       quantity={item.quantity}
       handleCartChange={() => handleCartChange(item, quantity, event)}
       removeFromCart={() => removeFromCart(item.id)}

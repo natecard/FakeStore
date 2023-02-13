@@ -10,6 +10,8 @@ export default function App() {
   const [productData, setProductData] = useState<any[]>([]);
   const [quantity, setQuantity] = useState(0);
   const [cart, setCart] = useState<item[]>([]);
+  const [cartSum, setCartSum] = useState(0);
+  const [cartQuantity, setCartQuantity] = useState(0);
 
   useEffect(() => {
     async function apiStoreCall() {
@@ -46,15 +48,54 @@ export default function App() {
             quantity: item.quantity,
             handleQuantityChange: handleQuantityChange,
             addToCart: addToCart,
-            amount: item.node.variants.edges.map((edge: any) => {
-              return edge.node.price.amount;
-            }),
+            amount: item.node.variants.edges
+              .map((edge: any) => {
+                return edge.node.price.amount;
+              })
+              .slice(0, 1)
+              .join(''),
           })
         )
       );
     }
     apiStoreCall();
   }, []);
+
+  useEffect(() => {
+    const cartTotal: any[] = [];
+    const amountTotal = cart.map((item: item) => {
+      cartTotal.push(item.amount);
+    });
+    function sumArray(array: any[]) {
+      return array
+        .map(function (item) {
+          return parseFloat(item);
+        })
+        .reduce(function (sum, current) {
+          return sum + current;
+        }, 0);
+    }
+    setCartSum(sumArray(cartTotal));
+  }, [cart]);
+
+  useEffect(() => {
+    const cartItemTotal: any[] = [];
+    const amountTotal = cart.map((item: item) => {
+      cartItemTotal.push(item.quantity);
+    });
+    function sumArray(array: any[]) {
+      return array
+        .map(function (item: string) {
+          return parseFloat(item);
+        })
+        .reduce(function (sum: any, current: any) {
+          return sum + current;
+        }, 0);
+    }
+    setCartQuantity(sumArray(cartItemTotal));
+    console.log(cart);
+  }, [cart]);
+
   function removeFromCart(itemId: string) {
     console.log('item deleted', itemId);
     setCart((oldCart) => oldCart.filter((item) => item.id !== itemId));
@@ -136,6 +177,10 @@ export default function App() {
         handleQuantityChange,
         handleCartChange,
         removeFromCart,
+        cartSum,
+        cartQuantity,
+        setCartSum,
+        setCartQuantity,
       }}
     >
       <Routes>
