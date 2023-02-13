@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../App';
 import Header from './Header';
 import { item } from './Interfaces';
@@ -23,8 +23,42 @@ export default function ShoppingCart() {
     handleQuantityChange: Function;
     addToCart: Function;
   };
+  const [cartSum, setCartSum] = useState(0);
+  const [cartQuantity, setCartQuantity] = useState(0);
   if (!cart) return null;
-
+  useEffect(() => {
+    const cartTotal: any[] = [];
+    const amountTotal = cart.map((item: item) => {
+      cartTotal.push(item.amount[0]);
+    });
+    function sumArray(array) {
+      return array
+        .map(function (item) {
+          return parseFloat(item);
+        })
+        .reduce(function (sum, current) {
+          return sum + current;
+        }, 0);
+    }
+    setCartSum(sumArray(cartTotal));
+  }, [cart]);
+  useEffect(() => {
+    const cartItemTotal: any[] = [];
+    const amountTotal = cart.map((item: item) => {
+      cartItemTotal.push(item.quantity);
+    });
+    function sumArray(array) {
+      return array
+        .map(function (item) {
+          return parseFloat(item);
+        })
+        .reduce(function (sum, current) {
+          return sum + current;
+        }, 0);
+    }
+    setCartQuantity(sumArray(cartItemTotal));
+    console.log(cart);
+  }, [cart]);
   const shoppingCartElements = cart.map((item: item) => (
     <ShoppingCartContents
       title={item.title}
@@ -47,8 +81,8 @@ export default function ShoppingCart() {
         <h2 className="text-4xl self-center">Shopping Cart</h2>
         <div className="grid-cols-1  ">{shoppingCartElements}</div>
         <div className="grid grid-cols-5">
-          <h2 className="col-start-3">Items:</h2>
-          <h2 className="col-start-4">Cart Total:</h2>
+          <h2 className="col-start-3">Items:{cartQuantity}</h2>
+          <h2 className="col-start-4">Cart Total:${cartSum}.00</h2>
         </div>
       </div>
     </div>

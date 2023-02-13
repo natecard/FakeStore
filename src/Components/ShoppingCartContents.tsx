@@ -27,7 +27,7 @@ export default function ShoppingCartContents(props: item) {
         />
       </div>
       <div className=" flex justify-center self-center font-bold">
-        ${props.amount * props.quantity}.00
+        ${props.quantity * props.amount}.00
       </div>
       <div className="flex flex-row mb-2 self-center">
         <button

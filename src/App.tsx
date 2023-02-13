@@ -85,7 +85,7 @@ export default function App() {
       }
       const cartItem = newCart[cartItemIndex];
       cartItem.quantity = Number(event.target.value);
-      newCart[cartItemIndex] = cartItem;
+      newCart[cartItemIndex] = { ...cartItem };
       return newCart;
     });
     if (item.quantity < 1) {
