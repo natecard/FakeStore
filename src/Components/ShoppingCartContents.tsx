@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Context } from '../App';
-import { item } from './Interfaces';
+import item from './Interfaces';
 export default function ShoppingCartContents(props: item) {
   return (
     <div
       key={props.id}
-      className=" border-b-[1px] border-solid border-gray-400 justify-around font-base grid grid-cols-5"
+      className=" border-b-[1px] border-solid border-gray-400 justify-around pr-3 font-base grid grid-cols-5"
     >
       <img
         className=" rounded-md flex h-44 justify-end self-center"

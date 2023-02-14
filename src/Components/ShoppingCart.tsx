@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../App';
 import Header from './Header';
-import { item } from './Interfaces';
+import item from './Interfaces';
 import ShoppingCartContents from './ShoppingCartContents';
 
 export default function ShoppingCart() {
@@ -16,6 +16,7 @@ export default function ShoppingCart() {
     setCartSum,
     cartQuantity,
     setCartQuantity,
+    cartTotal,
   } = useContext(Context) as {
     amount: number;
     quantity: number;
@@ -30,6 +31,7 @@ export default function ShoppingCart() {
     cartQuantity: number;
     setCartSum: any;
     setCartQuantity: any;
+    cartTotal: number;
   };
 
   if (!cart) return null;
@@ -55,9 +57,16 @@ export default function ShoppingCart() {
       <div className="flex flex-col font-base min-h-screen bg-[#f3f3f3]">
         <h2 className="text-4xl self-center">Shopping Cart</h2>
         <div className="grid-cols-1  ">{shoppingCartElements}</div>
-        <div className="grid grid-cols-5">
-          <h2 className="col-start-3">Items:{cartQuantity}</h2>
-          <h2 className="col-start-4">Cart Total:${cartSum}.00</h2>
+        <div className="sticky items-center font-bold bottom-0 bg-gray-300 py-7 grid grid-cols-5">
+          <h2 className="col-start-3 text-center pr-20">
+            Items: {cartQuantity}
+          </h2>
+          <h2 className="col-start-4 text-center pr-20">
+            Cart Total: $ {cartTotal}.00
+          </h2>
+          <button className="uppercase mr-3 p-3 bg-black rounded hover:bg-white hover:text-black text-white font-bold">
+            Checkout
+          </button>
         </div>
       </div>
     </div>

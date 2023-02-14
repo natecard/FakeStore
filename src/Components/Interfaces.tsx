@@ -1,4 +1,4 @@
-export interface item {
+export default interface item {
   description: string;
   id: string;
   title: string;
@@ -9,5 +9,6 @@ export interface item {
   handleQuantityChange: Function;
   handleCartChange: Function;
   removeFromCart: Function;
-  // itemAmount: number;
+  cartSum: number;
+  cartQuantity: number;
 }

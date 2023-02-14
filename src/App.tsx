@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createContext } from 'react';
-import { item } from './Components/Interfaces';
+import item from './Components/Interfaces';
 import { Route, Routes } from 'react-router-dom';
 import Home from './Components/Home';
 import Products from './Components/Products';
@@ -9,9 +9,11 @@ export const Context = createContext<any>([]);
 export default function App() {
   const [productData, setProductData] = useState<any[]>([]);
   const [quantity, setQuantity] = useState(0);
+  const [itemTotal, setItemTotal] = useState(0);
   const [cart, setCart] = useState<item[]>([]);
   const [cartSum, setCartSum] = useState(0);
   const [cartQuantity, setCartQuantity] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0);
 
   useEffect(() => {
     async function apiStoreCall() {
@@ -48,6 +50,9 @@ export default function App() {
             quantity: item.quantity,
             handleQuantityChange: handleQuantityChange,
             addToCart: addToCart,
+            itemTotal: itemTotal,
+            cartQuantity: cartQuantity,
+            cartSum: cartSum,
             amount: item.node.variants.edges
               .map((edge: any) => {
                 return edge.node.price.amount;
@@ -62,9 +67,17 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const cartTotal: any[] = [];
+    cart.map((item: item) => {
+      setItemTotal(item.amount * item.quantity);
+    });
+  }, [cart]);
+  const cartAmount: any[] = [];
+  const itemQuantity: any[] = [];
+
+  useEffect(() => {
     const amountTotal = cart.map((item: item) => {
-      cartTotal.push(item.amount);
+      cartAmount.push(item.amount);
+      itemQuantity.push(item.quantity);
     });
     function sumArray(array: any[]) {
       return array
@@ -75,25 +88,18 @@ export default function App() {
           return sum + current;
         }, 0);
     }
-    setCartSum(sumArray(cartTotal));
+    setCartSum(sumArray(cartAmount));
+    setCartQuantity(sumArray(itemQuantity));
   }, [cart]);
 
   useEffect(() => {
-    const cartItemTotal: any[] = [];
-    const amountTotal = cart.map((item: item) => {
-      cartItemTotal.push(item.quantity);
-    });
-    function sumArray(array: any[]) {
-      return array
-        .map(function (item: string) {
-          return parseFloat(item);
-        })
-        .reduce(function (sum: any, current: any) {
-          return sum + current;
-        }, 0);
-    }
-    setCartQuantity(sumArray(cartItemTotal));
-    console.log(cart);
+    const totalAmount = cartAmount.map(
+      (item, index) => item * itemQuantity[index]
+    );
+    const finalTotal = totalAmount.reduce((sum, current) => {
+      return sum + current;
+    }, 0);
+    setCartTotal(finalTotal);
   }, [cart]);
 
   function removeFromCart(itemId: string) {
@@ -121,17 +127,20 @@ export default function App() {
           amount: item.amount,
           handleCartChange: handleCartChange,
           removeFromCart: removeFromCart,
+          cartQuantity: cartQuantity,
+          cartSum: cartSum,
         });
+
         return newCart;
+      }
+      if (item.quantity < 1) {
+        removeFromCart(item.id);
       }
       const cartItem = newCart[cartItemIndex];
       cartItem.quantity = Number(event.target.value);
       newCart[cartItemIndex] = { ...cartItem };
       return newCart;
     });
-    if (item.quantity < 1) {
-      removeFromCart(item.id);
-    }
   }
 
   function handleQuantityChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -154,6 +163,8 @@ export default function App() {
           amount: item.amount,
           handleCartChange: handleCartChange,
           removeFromCart: removeFromCart,
+          cartQuantity: cartQuantity,
+          cartSum: cartSum,
         });
         return newCart;
       }
@@ -181,6 +192,9 @@ export default function App() {
         cartQuantity,
         setCartSum,
         setCartQuantity,
+        setItemTotal,
+        itemTotal,
+        cartTotal,
       }}
     >
       <Routes>

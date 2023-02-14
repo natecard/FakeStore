@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { Context } from '../App';
 
 export default function Header() {
+  const { cart } = useContext(Context);
   return (
-    <div className="text-[#305d44] font-base subpixel-antialiased p-4 list-none bg-black ">
+    <div className="z-50 text-[#305d44] font-base subpixel-antialiased p-5 list-none bg-black sticky top-0 ">
       <nav>
         <div className="flex flex-row items-end">
           <Link className="pl-4" to="/Home">
             <img className="h-12 w-36" src="brand-dark.png" alt="" />
           </Link>
-          <div className="flex flex-row w-full self-center justify-between">
-            <div className="flex flex-row">
-              <div className="ml-8 font-base text-2xl tracking-wider">
-                <Link className="cursor-pointer" to="/Products">
-                  Store
-                </Link>
-              </div>
-            </div>
-            <li className="bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] pr-4 bg-clip-text">
+          <div className="flex flex-row w-full items-center justify-between">
+            <Link
+              className="font-base text-2xl tracking-wider px-5 ml-10 cursor-pointer"
+              to="/Products"
+            >
+              <div> Store </div>
+            </Link>
+            <li className="flex flex-row bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] pr-4 bg-clip-text">
               <Link to="/ShoppingCart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -32,6 +33,7 @@ export default function Header() {
                   />
                 </svg>
               </Link>
+              {cart.length > 0 ? <div>{cart.length}</div> : null}
             </li>
           </div>
         </div>
