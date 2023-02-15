@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './Components/Home';
 import Products from './Components/Products';
 import ShoppingCart from './Components/ShoppingCart';
+import ItemPages from './Components/ItemPages';
 export const Context = createContext<any>([]);
 
 export default function App() {
@@ -156,7 +157,7 @@ export default function App() {
           id: item.id,
           title: item.title,
           description: item.description,
-          quantity: quantity < 1 ? 1 : quantity,
+          quantity: quantity < 1 ? ++quantity : quantity,
           addToCart: addToCart,
           handleQuantityChange: handleQuantityChange,
           image: item.image,
@@ -202,6 +203,28 @@ export default function App() {
         <Route path="/Home" element={<Home />}></Route>
         <Route path="/Products" element={<Products />}></Route>
         <Route path="/ShoppingCart" element={<ShoppingCart />}></Route>
+        {productData.map((item) => (
+          <Route
+            key={item.id}
+            path={`/${item.title}`}
+            element={
+              <ItemPages
+                description={item.description}
+                id={item.id}
+                title={item.title}
+                image={item.image}
+                amount={item.amount}
+                quantity={quantity}
+                addToCart={addToCart}
+                handleQuantityChange={handleQuantityChange}
+                handleCartChange={handleCartChange}
+                removeFromCart={removeFromCart}
+                cartSum={0}
+                cartQuantity={0}
+              />
+            }
+          />
+        ))}
       </Routes>
     </Context.Provider>
   );

@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { Context } from '../App';
 import Header from './Header';
 import Items from './Items';
-import { item } from './Interfaces';
+import item from './Interfaces';
+import Footer from './Footer';
 
 export default function Products() {
   const {
@@ -32,7 +33,7 @@ export default function Products() {
   };
   if (!productData) return null;
 
-  const productElements = productData.map((item) => (
+  const productElements = productData.map((item: item) => (
     <Items
       title={item.title}
       id={item.id}
@@ -45,6 +46,8 @@ export default function Products() {
       handleQuantityChange={() => handleQuantityChange(event)}
       handleCartChange={handleCartChange}
       removeFromCart={removeFromCart}
+      cartSum={0}
+      cartQuantity={0}
     />
   ));
   return (
@@ -53,6 +56,7 @@ export default function Products() {
       <div className="grid bg-[#f3f3f3] gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {productElements}
       </div>
+      <Footer />
     </div>
   );
 }

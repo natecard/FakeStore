@@ -1,17 +1,20 @@
 import React from 'react';
-import { item } from './Interfaces';
+import { Link } from 'react-router-dom';
+import item from './Interfaces';
 export default function Items(props: item) {
   return (
     <div
       key={props.id}
       className="flex justify-around font-base flex-col pt-4 px-4"
     >
-      <img
-        className=" rounded-md flex object-fill justify-end self-center"
-        src={props.image}
-        alt={props.title}
-      />
-      <h2 className="text-center truncate">{props.title}</h2>
+      <Link to={`/${props.title}`}>
+        <img
+          className=" rounded-md flex object-fill justify-end self-center"
+          src={props.image}
+          alt={props.title}
+        />
+        <h2 className="text-center truncate">{props.title}</h2>
+      </Link>
       <div className="justify-center  align-middle flex flex-row p-2">
         <input
           onChange={() => props.handleQuantityChange(event)}
@@ -20,6 +23,7 @@ export default function Items(props: item) {
           min="0"
           max="999"
           type="number"
+          placeholder="0"
           name={`amount-${props.id}`}
           id={props.id}
         />

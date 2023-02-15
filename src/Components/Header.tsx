@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Context } from '../App';
+import item from './Interfaces';
 
 export default function Header() {
-  const { cart } = useContext(Context);
+  const { cartQuantity, cart, cartTotal } = useContext(Context);
+
   return (
     <div className="z-50 text-[#305d44] font-base subpixel-antialiased p-5 list-none bg-black sticky top-0 ">
       <nav>
@@ -18,7 +20,7 @@ export default function Header() {
             >
               <div> Store </div>
             </Link>
-            <li className="flex flex-row bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] pr-4 bg-clip-text">
+            <li className="flex flex-row px-5 py-2 relative bg-gradient-to-b from-white via-[#e9f5f2]  to-[#354d4b] group pr-4 bg-clip-text ">
               <Link to="/ShoppingCart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +35,27 @@ export default function Header() {
                   />
                 </svg>
               </Link>
-              {cart.length > 0 ? <div>{cart.length}</div> : null}
+              {cartQuantity > 0 ? (
+                <div className="text-base font-light">{cartQuantity}</div>
+              ) : null}
+              <div className="z-50 rounded-lg group-hover:hover:ease-in duration-1000 absolute bg-black opacity-95 right-8 top-7 pt-1 group-hover:block   w-56 hidden">
+                <h2 className="hidden group-hover:block text-2xl text-center">
+                  Shopping Cart
+                </h2>
+                <div className="hidden rounded-b-lg group-hover:flex flex-col align-middle items-center font-bold bg-gray-300 py-7">
+                  <h2 className="hidden group-hover:flex justify-center">
+                    Items: {cartQuantity}
+                  </h2>
+                  <h2 className="hidden group-hover:flex justify-center">
+                    Cart Total: $ {cartTotal}.00
+                  </h2>
+                  <Link to="/ShoppingCart">
+                    <button className="hidden group-hover:flex items-center uppercase mr-3 p-3 bg-black rounded hover:bg-white hover:text-black text-white font-bold">
+                      Checkout
+                    </button>
+                  </Link>
+                </div>
+              </div>
             </li>
           </div>
         </div>
