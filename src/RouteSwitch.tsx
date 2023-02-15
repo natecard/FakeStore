@@ -6,7 +6,7 @@ import App from './App';
 
 export default function RouteSwitch() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/FakeStore">
       <App />
     </BrowserRouter>
   );

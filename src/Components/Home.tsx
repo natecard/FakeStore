@@ -20,7 +20,7 @@ export default function Home() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-20  text-green-800 scale-150 pt-16 h-20"
+          className="w-20 scroll text-green-800 scale-150 pt-16 h-20"
         >
           <path
             strokeLinecap="round"
