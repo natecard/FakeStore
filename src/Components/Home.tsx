@@ -3,6 +3,10 @@ import Footer from './Footer';
 import Header from './Header';
 
 export default function Home() {
+  {
+    scrollTo({ top: 100, left: 100, behavior: 'smooth' });
+  }
+
   return (
     <div className="">
       <Header />
@@ -20,7 +24,7 @@ export default function Home() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-20 scroll text-green-800 scale-150 pt-16 h-20"
+          className="w-20 text-green-800 scale-150 pt-16 h-20"
         >
           <path
             strokeLinecap="round"
@@ -29,7 +33,7 @@ export default function Home() {
           />
         </svg>
       </div>
-      <p className="text-green-800 bg-[#f3f3f3] font-base p-32">
+      <p className="text-green-800 bg-[#f3f3f3] font-base px-12 py-24 md:p-32">
         At Ethos, we believe that looking good and doing good go hand in hand.
         That's why we offer a range of high-quality, stylish clothing that is
         also environmentally friendly.
