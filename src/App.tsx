@@ -199,6 +199,7 @@ export default function App() {
       }}
     >
       <Routes>
+        <Route path="/" element={<Home />}></Route>
         <Route path="/Home" element={<Home />}></Route>
         <Route path="/Products" element={<Products />}></Route>
         <Route path="/ShoppingCart" element={<ShoppingCart />}></Route>
